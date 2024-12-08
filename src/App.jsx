@@ -12,16 +12,41 @@
 
 // export default App;
 
-import React from "react";
-import Transaction from "./Transaction";
+
+
+
+// siyahilarin deyisdirlmesi
+
+
+import React, { useState, useEffect } from "react";
+import Filter from "./Filter";
+import "./index.css"; 
 
 const App = () => {
+  const [employees, setEmployees] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [department, setDepartment] = useState("All");
+
+  useEffect(() => {
+    fetch("https://5ea5ca472d86f00016b4626d.mockapi.io/brotherhood")
+      .then((response) => response.json())
+      .then((data) => setEmployees(data))
+      .catch((error) => console.error("Error fetching data:", error));
+  }, []);
+
   return (
-    <div>
-      <h1>Transaction</h1>
-      <Transaction />
+    <div className="container">
+      <h1>İşçilər Siyahısı</h1>
+      <Filter
+        searchTerm={searchTerm}
+        onSearchChange={setSearchTerm}
+        department={department}
+        onDepartmentChange={setDepartment}
+        employees={employees}
+      />
     </div>
   );
 };
 
 export default App;
+
